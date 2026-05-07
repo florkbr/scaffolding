@@ -231,7 +231,8 @@ describe('<ScalprumComponent />', () => {
     };
     const { container } = render(<ScalprumComponent {...props} />);
     /**
-     * Should render Loading component
+     * Should render Suspense fallback during module load.
+     * LoadingComponent is forwarded to remote component, not used by ScalprumComponent.
      */
     expect(container).toMatchSnapshot();
     await act(async () => {
@@ -370,5 +371,22 @@ describe('<ScalprumComponent />', () => {
     expect(loadComponentSpy).not.toHaveBeenCalled();
     expect(container).toMatchSnapshot();
     expect(screen.getAllByTestId('named-component')).toHaveLength(1);
+  });
+
+  test('should accept arbitrary forwarded props', async () => {
+    processManifestSpy.mockImplementationOnce(() => Promise.resolve());
+    ScalprumCore.initialize({ appsConfig: mockInitScalprumConfig });
+    await act(async () => {
+      render(
+        <ScalprumComponent
+          scope="appOne"
+          module="test"
+          history={{} as any}
+          store={{} as any}
+          appName="myApp"
+        />,
+      );
+    });
+    expect(getAppDataSpy).toHaveBeenCalledWith('appOne');
   });
 });

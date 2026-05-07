@@ -16,6 +16,7 @@
     "test": "npm-run-all --parallel test:*",
     "build": "nx run-many -t build",
     "lint": "nx run-many -t lint",
+    "typecheck": "nx run-many -t typecheck",
     "postinstall": "rm -rf .webpack-cache"
   },
   "private": true,

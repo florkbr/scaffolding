@@ -35,8 +35,11 @@ export type ScalprumProviderProps<T extends Record<string, any> = Record<string,
   | ScalprumProviderInstanceProps<T>
   | ScalprumProviderConfigurableProps<T>;
 
-function baseTransformPluginManifest(manifest: PluginManifest): PluginManifest {
-  return { ...manifest, loadScripts: manifest.loadScripts.map((script) => `${manifest.baseURL}${script}`) };
+function baseTransformPluginManifest<T extends PluginManifest>(manifest: T): T {
+  if ('loadScripts' in manifest) {
+    return { ...manifest, loadScripts: manifest.loadScripts.map((script: string) => `${manifest.baseURL}${script}`) };
+  }
+  return manifest;
 }
 
 export function ScalprumProvider<T extends Record<string, any> = Record<string, any>>(

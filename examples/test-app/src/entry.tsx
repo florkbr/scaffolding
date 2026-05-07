@@ -54,17 +54,20 @@ const Entry = () => {
       pluginSDKOptions={{
         pluginLoaderOptions: {
           transformPluginManifest(manifest) {
-            const host = config[manifest.name]?.assetsHost;
-            if (host) {
+            if ('loadScripts' in manifest) {
+              const host = config[manifest.name]?.assetsHost;
+              if (host) {
+                return {
+                  ...manifest,
+                  loadScripts: manifest.loadScripts.map((script: string) => `${host}/${script}`),
+                };
+              }
               return {
                 ...manifest,
-                loadScripts: manifest.loadScripts.map((script) => `${host}/${script}`),
+                loadScripts: manifest.loadScripts.map((script: string) => `${script}`),
               };
             }
-            return {
-              ...manifest,
-              loadScripts: manifest.loadScripts.map((script) => `${script}`),
-            };
+            return manifest;
           },
         },
       }}

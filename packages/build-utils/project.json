@@ -50,6 +50,9 @@
       "options": {
         "jestConfig": "packages/build-utils/jest.config.ts"
       }
+    },
+    "typecheck": {
+      "command": "tsc -p packages/build-utils/tsconfig.lib.json --noEmit"
     }
   }
 }

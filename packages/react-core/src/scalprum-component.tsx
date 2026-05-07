@@ -15,13 +15,18 @@ import DefaultErrorComponent from './default-error-component';
 import { PrefetchProvider } from './prefetch-context';
 import { useScalprum } from './use-scalprum';
 
-export type ScalprumComponentProps<API extends Record<string, any> = {}, Props extends Record<string, any> = {}> = Props & {
+export type ScalprumComponentProps<API extends Record<string, any> = {}, Props extends Record<string, any> = Record<string, any>> = Props & {
   fallback?: NonNullable<React.ReactNode> | null;
+  /** Forwarded to remote component. Not consumed by ScalprumComponent. */
   api?: API;
   scope: string;
   module: string;
   importName?: string;
   ErrorComponent?: React.ReactElement;
+  /**
+   * Forwarded to remote component for internal loading states.
+   * Not consumed by ScalprumComponent - use `fallback` for module loading UI.
+   */
   LoadingComponent?: React.ComponentType;
   innerRef?: React.Ref<unknown>;
   processor?: (item: any) => string[];
@@ -221,6 +226,10 @@ class BaseScalprumComponent extends React.Component<ScalprumComponentProps, Base
   }
 }
 
-export const ScalprumComponent: React.ComponentType<ScalprumComponentProps> = React.forwardRef((props, ref) => (
+/**
+ * ScalprumComponent forwards all unrecognized props to the dynamically loaded remote component.
+ * Pass any additional props needed by your remote module (e.g., history, store, appName).
+ */
+export const ScalprumComponent: React.ComponentType<ScalprumComponentProps> = React.forwardRef((props: any, ref) => (
   <BaseScalprumComponent {...props} innerRef={ref} />
-));
+)) as React.ComponentType<ScalprumComponentProps>;

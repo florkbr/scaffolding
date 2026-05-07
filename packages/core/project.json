@@ -39,6 +39,9 @@
     },
     "syncDependencies": {
       "executor": "@scalprum/build-utils:sync-dependencies"
+    },
+    "typecheck": {
+      "command": "tsc -p packages/core/tsconfig.esm.json --noEmit"
     }
   }
 }

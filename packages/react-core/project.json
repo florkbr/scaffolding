@@ -44,6 +44,9 @@
         "devServerTarget": "test-app:build",
         "skipServe": true
       }
+    },
+    "typecheck": {
+      "command": "tsc -p packages/react-core/tsconfig.esm.json --noEmit"
     }
   }
 }
